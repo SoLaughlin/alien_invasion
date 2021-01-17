@@ -4,6 +4,7 @@ import pygame
 
 from settings import Settings
 from robot import Robot
+from ship import Ship
 
 
 class AlienInvasion:
@@ -19,6 +20,7 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.robot = Robot(self)
+        self.ship = Ship(self)
 
         # sets the background colour.
         self.bg_colour = self.settings.bg_colour
@@ -34,6 +36,7 @@ class AlienInvasion:
         """Update images on the screen and flip to the new screen"""
         # Redraw the screen during each pass through the loop
         self.screen.fill(self.settings.bg_colour)
+        self.ship.blitme()
         self.robot.blitme()
 
         # Make the most recently drawn screen visible.
