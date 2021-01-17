@@ -3,7 +3,7 @@ import pygame
 
 class Robot:
     """Class to manage a robot character"""
-    def __init__(self):
+    def __init__(self, ai_game):
         """initialize the robot and set its starting position"""
         self.screen = ai_game.screen
         # rect = rectangle
@@ -15,4 +15,8 @@ class Robot:
         self.rect = self.image.get_rect()
 
         # Start each new robot at the middle of the screen
-        self.rect.mid = self.screen_rect.mid
+        self.rect.center = self.screen_rect.center
+
+    def blitme(self):
+        """Draw the ship at its current location"""
+        self.screen.blit(self.image, self.rect)
