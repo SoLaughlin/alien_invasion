@@ -11,7 +11,7 @@ class Robot:
 
         # load the ship image and get its rect.
 
-        self.image = pygame.image.load('images/Robot_char.bmp')
+        self.image = pygame.image.load('images/robot char resized.bmp')
         self.rect = self.image.get_rect()
 
         # Start each new robot at the middle of the screen
