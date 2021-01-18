@@ -21,24 +21,37 @@ class Ship:
 
         # Store a decimal value for the ships horizontal position
         self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
 
         # movement flag
         self.moving_right = False
         self.moving_left = False
+        self.moving_up = False
+        self.moving_down = False
 
     def update(self):
         """Update the ships position based on the movement flag"""
 
-        # Ensures the ship can't go off screen
+        # Ensures the ship can't go off screen right
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed
-
+        # Ensures the ship can't go off screen left
         if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed
+
+        # moveability in the y_axis
+        if self.moving_up:
+            # TODO find out why this works counter intuitively
+            self.y -= self.settings.ship_speed
+
+        if self.moving_down:
+            self.y += self.settings.ship_speed
 
         # updates the rectangle object from self.x
         self.rect.x = self.x
 
+        # updates rectangle object from self.y
+        self.rect.y = self.y
 
     def blitme(self):
         """Draw the ship at its current location"""
