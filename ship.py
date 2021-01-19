@@ -48,7 +48,7 @@ class Ship:
             self.y -= self.settings.ship_speed
 
         # TODO 1030 for 1080p fullscreen application works, need more elegent solution
-        if self.moving_down and self.rect.y <= (self.settings.screen_height - 50):
+        if self.moving_down and self.rect.midbottom[1] <= self.screen_rect.midbottom[1]:
             self.y += self.settings.ship_speed
 
         # updates the rectangle object from self.x
