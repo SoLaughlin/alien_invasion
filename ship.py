@@ -40,8 +40,8 @@ class Ship:
             self.x -= self.settings.ship_speed
 
         # moveability in the y_axis
+        # y axis_movement opposite  because of pygame starting coords (0,0) at top left of screen increasing down
         if self.moving_up:
-            # TODO find out why this works counter intuitively
             self.y -= self.settings.ship_speed
 
         if self.moving_down:
