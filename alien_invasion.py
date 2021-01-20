@@ -5,6 +5,7 @@ import pygame
 from settings import Settings
 from robot import Robot
 from ship import Ship
+from bullet import Bullet
 
 
 class AlienInvasion:
@@ -26,6 +27,7 @@ class AlienInvasion:
 
         # sets the background colour.
         self.bg_colour = self.settings.bg_colour
+        self.bullets = pygame.sprite.Group()
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -33,7 +35,7 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self._update_screen()
-            # Watch for keyboard and mouse events.
+            self.bullets.update()
 
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""
@@ -41,6 +43,9 @@ class AlienInvasion:
         self.screen.fill(self.settings.bg_colour)
         self.ship.blitme()
         self.robot.blitme()
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+
 
         # Make the most recently drawn screen visible.
         pygame.display.flip()
@@ -72,6 +77,9 @@ class AlienInvasion:
         elif event.key == pygame.K_UP:
             self.ship.moving_up = True
 
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+
         elif event.key == pygame.K_q:
             sys.exit()
 
@@ -88,6 +96,12 @@ class AlienInvasion:
 
         elif event.key == pygame.K_UP:
             self.ship.moving_up = False
+
+    def _fire_bullet(self):
+        """Creates a bullet and add it to the bullets group"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
+
 
 
 
