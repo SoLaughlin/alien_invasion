@@ -32,7 +32,6 @@ class Ship:
     def update(self):
         """Update the ships position based on the movement flag"""
 
-
         # Ensures the ship can't go off screen right
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed
@@ -40,14 +39,11 @@ class Ship:
         if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed
 
-
-
-        # moveability in the y_axis
         # y axis_movement opposite  because of pygame starting coords (0,0) at top left of screen increasing down
         if self.moving_up and self.rect.y > 0:
             self.y -= self.settings.ship_speed
 
-        # TODO 1030 for 1080p fullscreen application works, need more elegent solution
+        # checks that the y coordinate in ships rectangle doesnt fall below the y coordinate in the screen rect
         if self.moving_down and self.rect.midbottom[1] <= self.screen_rect.midbottom[1]:
             self.y += self.settings.ship_speed
 
