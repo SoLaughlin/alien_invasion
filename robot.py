@@ -12,7 +12,7 @@ class Robot(Sprite):
 
         # load the robot image and get its rect.
 
-        self.image = pygame.image.load('images/robot_fixed.bmp')
+        self.image = pygame.image.load('images/robot_fixed.png')
         self.rect = self.image.get_rect()
 
         # Start each new robot at the middle of the screen
