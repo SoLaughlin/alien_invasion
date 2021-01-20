@@ -43,6 +43,7 @@ class AlienInvasion:
         self.screen.fill(self.settings.bg_colour)
         self.ship.blitme()
         self.robot.blitme()
+
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
 
