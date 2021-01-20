@@ -22,12 +22,45 @@ class AlienInvasion:
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
 
-        self.robot = Robot(self)
         self.ship = Ship(self)
-
-        # sets the background colour.
-        self.bg_colour = self.settings.bg_colour
         self.bullets = pygame.sprite.Group()
+        self.robot = pygame.sprite.Group()
+
+        self._create_fleet()
+
+        self.bg_colour = self.settings.bg_colour
+
+    def _create_robot(self, robot_number, row_number):
+        """Create a robot and place it in a row"""
+        robot = Robot(self)
+        robot_width, robot_height = robot.rect.size
+        robot.x = robot_width + 2 * robot_width * robot_number
+        robot.rect.x = robot.x
+        robot.rect.y = robot.rect.height + 2 * robot.rect.height * row_number
+        self.robot.add(robot)
+
+    def _create_fleet(self):
+        """Creates a fleet of robots"""
+
+        robot = Robot(self)
+        robot_width, robot_height = robot.rect.size
+
+        # available space (how many robots can fit on screen on the x-axis)
+        available_space_x = self.settings.screen_width - (2 * robot_width)
+        number_robots_x = available_space_x // (2 * robot_width)
+
+        # determine the number of rows of robots that fit on the screen.
+        ship_height = self.ship.rect.height
+        available_space_y = (self.settings.screen_height - (3 * robot_height) - ship_height)
+        number_rows = available_space_y // (2 * robot_height)
+
+        # create the full fleet of robots.
+        for row_number in range(number_rows):
+            for robot_number in range(number_robots_x):
+                self._create_robot(robot_number, row_number)
+
+
+       # self.robot.add(robot)
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -42,11 +75,10 @@ class AlienInvasion:
         # Redraw the screen during each pass through the loop
         self.screen.fill(self.settings.bg_colour)
         self.ship.blitme()
-        self.robot.blitme()
+        self.robot.draw(self.screen)
 
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
-
 
         # Make the most recently drawn screen visible.
         pygame.display.flip()
@@ -62,7 +94,6 @@ class AlienInvasion:
 
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
-
 
     def _check_keydown_events(self, event):
         """Respond to keydown presses"""
@@ -102,9 +133,6 @@ class AlienInvasion:
         """Creates a bullet and add it to the bullets group"""
         new_bullet = Bullet(self)
         self.bullets.add(new_bullet)
-
-
-
 
 
 if __name__ == '__main__':
