@@ -24,11 +24,38 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
-        self.robot = pygame.sprite.Group()
+        self.robots = pygame.sprite.Group()
 
         self._create_fleet()
 
         self.bg_colour = self.settings.bg_colour
+
+    def run_game(self):
+        """Start the main loop for the game."""
+        while True:
+            self._check_events()
+            self.ship.update()
+            self._update_screen()
+            self.bullets.update()
+            self._update_robots()
+
+    def _update_screen(self):
+        """Update images on the screen and flip to the new screen"""
+        # Redraw the screen during each pass through the loop
+        self.screen.fill(self.settings.bg_colour)
+        self.ship.blitme()
+        self.robots.draw(self.screen)
+
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+
+        # Make the most recently drawn screen visible.
+        pygame.display.flip()
+
+    def _update_robots(self):
+        """update position of all aliens in the fleet"""
+        self._check_fleet_edges()
+        self.robots.update()
 
     def _create_robot(self, robot_number, row_number):
         """Create a robot and place it in a row"""
@@ -37,7 +64,7 @@ class AlienInvasion:
         robot.x = robot_width + 2 * robot_width * robot_number
         robot.rect.x = robot.x
         robot.rect.y = robot.rect.height + 2 * robot.rect.height * row_number
-        self.robot.add(robot)
+        self.robots.add(robot)
 
     def _create_fleet(self):
         """Creates a fleet of robots"""
@@ -59,29 +86,18 @@ class AlienInvasion:
             for robot_number in range(number_robots_x):
                 self._create_robot(robot_number, row_number)
 
+    def _check_fleet_edges(self):
+        """Respond by dropping down the fleet if a robot reaches an edge"""
+        for robot in self.robots.sprites():
+            if robot.check_edges():
+                self._change_fleet_direction()
+                break
 
-       # self.robot.add(robot)
-
-    def run_game(self):
-        """Start the main loop for the game."""
-        while True:
-            self._check_events()
-            self.ship.update()
-            self._update_screen()
-            self.bullets.update()
-
-    def _update_screen(self):
-        """Update images on the screen and flip to the new screen"""
-        # Redraw the screen during each pass through the loop
-        self.screen.fill(self.settings.bg_colour)
-        self.ship.blitme()
-        self.robot.draw(self.screen)
-
-        for bullet in self.bullets.sprites():
-            bullet.draw_bullet()
-
-        # Make the most recently drawn screen visible.
-        pygame.display.flip()
+    def _change_fleet_direction(self):
+        """Drop the entire fleet and change the direction"""
+        for robot in self.robots.sprites():
+            robot.rect.y += self.settings.fleet_drop_speed
+            self.settings.fleet_direction *= -1
 
     def _check_events(self):
         """responds to keypresses and mouse events"""
